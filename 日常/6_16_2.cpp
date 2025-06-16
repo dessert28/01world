@@ -3,13 +3,13 @@ using namespace std;
 int main()
 {
     int n;
-    int score,temp;
+    int score=0,temp=0;
     cin>>n;
     if (n<=10)
     {
         score=n*6;
     }
-    else if(11<=n<=20)
+    else if(11<=n&&n<=20)
     {
         temp=n-10;
         score=temp*2+60;

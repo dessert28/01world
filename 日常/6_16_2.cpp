@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;    
+int main()
+{
+    int n;
+    int score,temp;
+    cin>>n;
+    if (n<=10)
+    {
+        score=n*6;
+    }
+    else if(11<=n<=20)
+    {
+        temp=n-10;
+        score=temp*2+60;
+    }
+    else
+    {
+        temp=n-20;
+        score=temp*1+80;
+    }
+    cout<<score<<endl;
+    return 0;
+}

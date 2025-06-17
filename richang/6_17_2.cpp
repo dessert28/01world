@@ -9,15 +9,15 @@ int main()
     wtime=n/1.2;
     if (wtime>ctime)
     {
-        cout<<"骑车"<<endl;
+        cout<<"楠戣溅"<<endl;
     }
     else if (wtime<ctime)
     {
-        cout<<"走路"<<endl;
+        cout<<"璧拌矾"<<endl;
     }
     else
     {
-        cout<<"一样快"<<endl;
+        cout<<"涓�鏍峰揩"<<endl;
     }
     return 0;
 }

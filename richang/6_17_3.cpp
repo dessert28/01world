@@ -2,15 +2,15 @@
 using namespace std;
 int main()
 {
-    int n,a;
-    cin>>n>>a;
+    int n,a;    cin>>n>>a;
     int temp,sum;
     temp=a;
-    sum=0;
-    for (int i = 0; i < n; i++)
+    sum=a;
+    for (int i = 1; i < n; i++)
     {
-        sum+=temp;
-        temp*=10;
+       temp=temp*10+a;
+       sum+=temp;
+        
     }
     cout<<sum<<endl;
     return 0;

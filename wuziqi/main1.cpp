@@ -31,22 +31,80 @@ int flag = 0;
     参数: void
     返回值: void
 */
-void init();
+void init() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            board[i][j] = 0; // 将棋盘的值初始化为0
+        }
+    }
+    flag = 0; // 当前回合设为黑棋(flag设为0)
+}
 
-/*
-    *难点1
-    负责人: 张三
-    功能: isWin: 根据传入的坐标(board对应位置)和flag值 判断落点后是否获胜
-    参数:
-        x: 当前回合落子的x坐标
-        y: 当前回合落子的y坐标
-    返回值:
-        0表示没有获胜
-        1表示黑子胜利
-        2表示白子胜利
-*/
-int isWin(int x, int y);
 
+
+int isWin(int x, int y)
+{
+    if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return 0; // 添加越界检查
+    int player = board[x][y]; // 获取当前落子的颜色
+    int count = 0; // 用于计数连续的棋子数量
+
+    // 水平方向判断
+    for (int i = 0; i < SIZE; i++) {
+        if (board[x][i] == player) {
+            count++;
+            if (count == 5) {
+                return player; // 如果连续5个棋子，返回该玩家胜利
+            }
+        } else {
+            count = 0; // 重置计数器
+        }
+    }
+
+    // 垂直方向判断
+    count = 0;
+    for (int i = 0; i < SIZE; i++) {
+        if (board[i][y] == player) {
+            count++;
+            if (count == 5) {
+                return player;
+            }
+        } else {
+            count = 0;
+        }
+    }
+
+    // 左上到右下方向判断
+    count = 0;
+    for (int i = -4; i <= 4; i++) {
+        if (x + i >= 0 && x + i < SIZE && y + i >= 0 && y + i < SIZE) {
+            if (board[x + i][y + i] == player) {
+                count++;
+                if (count == 5) {
+                    return player;
+                }
+            } else {
+                count = 0;
+            }
+        }
+    }
+
+    // 右上到左下方向判断
+    count = 0;
+    for (int i = -4; i <= 4; i++) {
+        if (x + i >= 0 && x + i < SIZE && y - i >= 0 && y - i < SIZE) {
+            if (board[x + i][y - i] == player) {
+                count++;
+                if (count == 5) {
+                    return player;
+                }
+            } else {
+                count = 0;
+            }
+        }
+    }
+
+    return 0; // 如果没有获胜，返回0
+}
 /*
     负责人: 张三
     功能: playerMove: 在指定位置落子
@@ -59,7 +117,18 @@ int isWin(int x, int y);
         1表示落子成功
 
 */
-int playerMove(int x, int y);
+
+
+int playerMove(int x, int y)
+{
+    if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return 0; // 添加越界检查
+    if (board[x][y] == 0) { // 如果board[x][y]是空地
+        board[x][y] = flag % 2 + 1; // 改为相应颜色(flag对应颜色)
+        return 1; // 表示落子成功
+    } else {
+        return 0; // 表示落子失败 (棋盘已经有子)
+    }
+}
 // -------------------- service --------------------
 
 
@@ -79,137 +148,6 @@ int playerMove(int x, int y);
     参数: void
     返回值: void
 */
-void menuView();
-
-/*
-    负责人: 张三
-    功能: gameView_ShowBoard: 根据board数组 打印游戏棋盘
-    参数: void
-    返回值: void
-*/
-void gameView_ShowBoard();
-
-/*
-    负责人: 张三
-    功能: winView: 
-        根据flag的值  打印游戏胜利界面  用户可以按任意键(使用getch函数)退出当前界面
-    参数: void
-    返回值: void
-*/
-void winView();
-
-/*
-    *难点2
-    负责人: 张三
-    功能: gameView: 游戏界面整合
-        初始化游戏数据(调用函数init())
-        while(1){
-            打印游戏界面(调用函数gameView_Showboard())
-            接收玩家坐标输入
-
-            落子(调用落子函数playerMove())
-                (如果落子失败 重新开始循环)
-
-            判断游戏是否胜利(调用胜利判断函数isWin())
-                (如果游戏胜利 调用胜利界面函数 然后结束当前界面)
-            切换玩家(修改flag值)
-        }
-    参数: void
-    返回值: void
-*/
-void gameView();
-// -------------------- view --------------------
-
-int main()
-{
-    menuView();
-    return 0;
-}
-
-void init() {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            board[i][j] = 0; //chushihua
-        }
-    }
-    flag = 0; // 黑棋flag设为0
-}
-
-int isWin(int x, int y)
-{
-    if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return 0;
-    int player = board[x][y];
-    int count = 0; // 计连续棋子
-
-    //水平
-    for (int i = 0; i < SIZE; i++) {
-        if (board[x][i] == player) {
-            count++;
-            if (count == 5) {
-                return player; //判断胜利
-            }
-        } else {
-            count = 0; //重置
-        }
-    }
-
-    // 垂直
-    count = 0;
-    for (int i = 0; i < SIZE; i++) {
-        if (board[i][y] == player) {
-            count++;
-            if (count == 5) {
-                return player;
-            }
-        } else {
-            count = 0;
-        }
-    }
-
-    // 左上右下
-    count = 0;
-    for (int i = -4; i <= 4; i++) {
-        if (x + i >= 0 && x + i < SIZE && y + i >= 0 && y + i < SIZE) {
-            if (board[x + i][y + i] == player) {
-                count++;
-                if (count == 5) {
-                    return player;
-                }
-            } else {
-                count = 0;
-            }
-        }
-    }
-
-    // 右上左下
-    count = 0;
-    for (int i = -4; i <= 4; i++) {
-        if (x + i >= 0 && x + i < SIZE && y - i >= 0 && y - i < SIZE) {
-            if (board[x + i][y - i] == player) {
-                count++;
-                if (count == 5) {
-                    return player;
-                }
-            } else {
-                count = 0;
-            }
-        }
-    }
-
-    return 0; //未获胜
-}
-
-int playerMove(int x, int y)
-{
-    if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
-        return 0;
-    if (board[x][y] == 0) { // 如果是空地
-        board[x][y] = flag % 2 + 1; // 改为相应颜色(flag对应颜色)
-        return 1; // 表示落子成功
-    } else {
-        return 0; // 表示落子失败 (棋盘已经有子)
-    }
-}
 
 void menuView() {
     while (1) {
@@ -248,6 +186,14 @@ void menuView() {
         }
     }
 }
+
+
+/*
+    负责人: 张三
+    功能: gameView_ShowBoard: 根据board数组 打印游戏棋盘
+    参数: void
+    返回值: void
+*/
 void gameView_ShowBoard()
 {
     system("cls"); // 清屏
@@ -271,6 +217,13 @@ void gameView_ShowBoard()
     }
 }
 
+/*
+    负责人: 张三
+    功能: winView: 
+        根据flag的值  打印游戏胜利界面  用户可以按任意键(使用getch函数)退出当前界面
+    参数: void
+    返回值: void
+*/
 void winView()
 {
     system("cls"); // 清屏
@@ -283,6 +236,25 @@ void winView()
     cin.get(); // 使用cin.get()替代getch()以提高跨平台性
 }
 
+/*
+    *难点2
+    负责人: 张三
+    功能: gameView: 游戏界面整合
+        初始化游戏数据(调用函数init())
+        while(1){
+            打印游戏界面(调用函数gameView_Showboard())
+            接收玩家坐标输入
+
+            落子(调用落子函数playerMove())
+                (如果落子失败 重新开始循环)
+
+            判断游戏是否胜利(调用胜利判断函数isWin())
+                (如果游戏胜利 调用胜利界面函数 然后结束当前界面)
+            切换玩家(修改flag值)
+        }
+    参数: void
+    返回值: void
+*/
 void gameView()
 {
     init(); // 初始化游戏数据
@@ -315,4 +287,40 @@ void gameView()
 
         flag++; // 切换玩家
     }
+}
+// -------------------- view --------------------
+
+int main()
+{
+    menuView();
+    return 0;
+}
+
+void init(){
+    //在此处完成代码
+}
+
+int isWin(int x, int y){
+    //在此处完成代码
+    return 0;
+}
+
+int playerMove(int x, int y){
+    //在此处完成代码
+}
+
+void menuView(){
+    //在此处完成代码
+}
+
+void gameView_ShowBoard(){
+    //在此处完成代码
+}
+
+void winView(){
+    //在此处完成代码
+}
+
+void gameView(){
+    //在此处完成代码
 }

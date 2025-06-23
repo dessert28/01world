@@ -10,7 +10,7 @@
 */
 #include<bits/stdc++.h>
 using namespace std;
-const int SIZE = 19;
+const int Size = 19;
 
 int board[19][19];
 
@@ -127,8 +127,8 @@ int main()
 }
 
 void init() {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
+    for (int i = 0; i < Size; i++) {
+        for (int j = 0; j < Size; j++) {
             board[i][j] = 0; //chushihua
         }
     }
@@ -137,12 +137,12 @@ void init() {
 
 int isWin(int x, int y)
 {
-    if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return 0;
+    if (x < 0 || x >= Size || y < 0 || y >= Size) return 0;
     int player = board[x][y];
     int count = 0; // 计连续棋子
 
     //水平
-    for (int i = 0; i < SIZE; i++) {
+    for (int i = 0; i < Size; i++) {
         if (board[x][i] == player) {
             count++;
             if (count == 5) {
@@ -155,7 +155,7 @@ int isWin(int x, int y)
 
     // 垂直
     count = 0;
-    for (int i = 0; i < SIZE; i++) {
+    for (int i = 0; i < Size; i++) {
         if (board[i][y] == player) {
             count++;
             if (count == 5) {
@@ -169,7 +169,7 @@ int isWin(int x, int y)
     // 左上右下
     count = 0;
     for (int i = -4; i <= 4; i++) {
-        if (x + i >= 0 && x + i < SIZE && y + i >= 0 && y + i < SIZE) {
+        if (x + i >= 0 && x + i < Size && y + i >= 0 && y + i < Size) {
             if (board[x + i][y + i] == player) {
                 count++;
                 if (count == 5) {
@@ -184,7 +184,7 @@ int isWin(int x, int y)
     // 右上左下
     count = 0;
     for (int i = -4; i <= 4; i++) {
-        if (x + i >= 0 && x + i < SIZE && y - i >= 0 && y - i < SIZE) {
+        if (x + i >= 0 && x + i < Size && y - i >= 0 && y - i < Size) {
             if (board[x + i][y - i] == player) {
                 count++;
                 if (count == 5) {
@@ -201,13 +201,16 @@ int isWin(int x, int y)
 
 int playerMove(int x, int y)
 {
-    if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
+    if (x < 0 || x >= Size || y < 0 || y >= Size)
         return 0;
-    if (board[x][y] == 0) { // 如果是空地
-        board[x][y] = flag % 2 + 1; // 改为相应颜色(flag对应颜色)
-        return 1; // 表示落子成功
-    } else {
-        return 0; // 表示落子失败 (棋盘已经有子)
+    if (board[x][y] == 0)
+    {
+        board[x][y] = flag % 2 + 1;
+        return 1; //落子成功
+    }
+    else
+    {
+        return 0; //落子失败 
     }
 }
 
@@ -222,28 +225,29 @@ void menuView() {
         cout << "请输入你的选择: ";
         cin >> choice;
 
-        // 验证输入是否为有效数字
         if (cin.fail()) {
-            cin.clear(); // 清除错误标志
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 忽略错误输入
-            cout << "无效的选择，请重新选择。" << endl;
+            cin.clear(); //清除错误标志
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); //忽略错误输入
+            cout << "无效的选择" << endl;
             system("pause");
             continue;
         }
 
         switch (choice) {
             case 1:
-                gameView(); // 进入游戏界面函数gameView();
+                gameView();
                 break;
             case 2:
                 cout << "敬请期待..." << endl;
-                system("pause"); // 暂停，等待用户输入
+                system("pause");
                 break;
             case 3:
                 exit(0); // 退出游戏
+
+                
                 break;
             default:
-                cout << "无效的选择，请重新选择。" << endl;
+                cout << "无效的选择" << endl;
                 system("pause");
         }
     }
@@ -252,19 +256,19 @@ void gameView_ShowBoard()
 {
     system("cls"); // 清屏
     cout << "  ";
-    for (int i = 0; i < SIZE; i++) {
+    for (int i = 0; i < Size; i++) {
         cout << i << " ";
     }
     cout << endl;
-    for (int i = 0; i < SIZE; i++) {
+    for (int i = 0; i < Size; i++) {
         cout << i << " ";
-        for (int j = 0; j < SIZE; j++) {
+        for (int j = 0; j < Size; j++) {
             if (board[i][j] == 0) {
-                cout << "+ "; // 空地用+表示
+                cout << "+ ";
             } else if (board[i][j] == 1) {
-                cout << "X "; // 黑子用X表示
+                cout << "X ";
             } else if (board[i][j] == 2) {
-                cout << "O "; // 白子用O表示
+                cout << "O ";
             }
         }
         cout << endl;
@@ -273,46 +277,47 @@ void gameView_ShowBoard()
 
 void winView()
 {
-    system("cls"); // 清屏
+    system("cls");
     if (flag % 2 + 1 == 1) {
         cout << "黑子胜利!" << endl;
     } else {
         cout << "白子胜利!" << endl;
     }
     cout << "按任意键返回主菜单...";
-    cin.get(); // 使用cin.get()替代getch()以提高跨平台性
+    cin.get();
 }
 
 void gameView()
 {
-    init(); // 初始化游戏数据
+    init(); //初始化游戏数据
     while (1) {
-        gameView_ShowBoard(); // 打印游戏界面
+        gameView_ShowBoard();//打印界面
 
         int x, y;
         cout << "请输入你要落子的坐标(x y): ";
         cin >> x >> y;
 
-        // 验证输入是否为有效数字
         if (cin.fail()) {
-            cin.clear(); // 清除错误标志
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 忽略错误输入
-            cout << "无效的坐标，请重新输入。" << endl;
+            cin.clear();//清除错误标志
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');//忽略错误输入
+            cout << "无效的坐标" << endl;
             system("pause");
             continue;
         }
 
-        if (!playerMove(x, y)) { // 如果落子失败
+        if (!playerMove(x, y)) //如果落子失败
+        {
             cout << "落子失败，该位置已有棋子，请重新输入。" << endl;
-            system("pause"); // 暂停，等待用户输入
+            system("pause");//暂停程序等待用户输入
             continue;
         }
 
-        if (isWin(x, y)) { // 判断游戏是否胜利
-            winView(); // 调用胜利界面函数
+        if (isWin(x, y))
+        {
+            winView();
             break;
         }
 
-        flag++; // 切换玩家
+        flag++;//切换玩家
     }
 }
